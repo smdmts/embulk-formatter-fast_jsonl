@@ -1,0 +1,14 @@
+compile
+exit
+compile
+scalafmt
+compile
+reload
+compile
+test
+compile
+exit
+compile
+comile
+compile
+test

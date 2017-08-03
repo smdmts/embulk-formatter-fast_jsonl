@@ -1,0 +1,6 @@
+#Successful Tests
+#Thu Aug 03 20:00:50 JST 2017
+org.embulk.formatter.fast_jsonl.json.JsonEncoderSpec=1501758050232
+org.embulk.formatter.jsonl2.json.JsonEncoderSpec=1501741019220
+org.embulk.formatter.jsonl2.json.JsonParserSpec=1501741019212
+org.embulk.formatter.fast_jsonl.json.JsonParserSpec=1501758050232
