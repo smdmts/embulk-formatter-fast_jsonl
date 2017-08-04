@@ -10,7 +10,7 @@ in:
       - { name: id, type: long }
       - { name: description, type: string }
       - { name: name, type: string }
-      - { name: payload, type: json }
+      - { name: payload, type: string }
     stop_on_invalid_record: true
 
 out:
@@ -19,4 +19,6 @@ out:
   file_ext: aaa
   formatter:
     type: fast_jsonl
-    explode_json_columns: [payload]
+    encoding: UTF-8
+    newline: LF
+    json_columns: [payload]
