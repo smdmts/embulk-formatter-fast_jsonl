@@ -1,0 +1,24 @@
+in:
+  type: file
+  path_prefix: ./example/data.tsv
+  parser:
+    type: csv
+    delimiter: "\t"
+    skip_header_lines: 0
+    null_string: ""
+    columns:
+      - { name: id, type: long }
+      - { name: description, type: string }
+      - { name: name, type: string }
+      - { name: payload, type: json}
+    stop_on_invalid_record: true
+
+out:
+  type: file
+  path_prefix: /tmp/embulk-formatter-fast_jsonl
+  file_ext: aaa
+  formatter:
+    type: fast_jsonl
+    encoding: UTF-8
+    newline: LF
+    explode_json_columns: []

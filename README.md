@@ -28,6 +28,12 @@ out:
       - JSON_COLUMN_2
 ```
 
+## Run Examples
+
+```
+./gradlew classpath
+embulk run example/config.yml -Ilib
+```
 
 ## Build
 
