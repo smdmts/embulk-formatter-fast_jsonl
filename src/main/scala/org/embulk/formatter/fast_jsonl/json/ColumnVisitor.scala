@@ -32,7 +32,7 @@ case class ColumnVisitor(reader: PageReader,
               explodeRecord.put(key, value)
           }
         } else {
-          explodeRecord.put(columnName, JsonEncoder(v))
+          explodeRecord.put(columnName, JsonParser.toJson(v))
         }
       } else {
         put(column, Json.fromString(v))
@@ -58,7 +58,7 @@ case class ColumnVisitor(reader: PageReader,
             explodeRecord.put(key, value)
         }
       } else {
-        put(column, Json.fromString(v.toJson))
+        put(column, JsonParser.toJson(v.toJson))
       }
     }
   }

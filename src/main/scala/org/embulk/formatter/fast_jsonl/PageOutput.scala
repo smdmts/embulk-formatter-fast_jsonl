@@ -19,12 +19,16 @@ case class PageOutput(schema: Schema, task: PluginTask, output: FileOutput)
   val reader: PageReader = new PageReader(schema)
   val explodeColumns: Seq[String] = task.getExplodeJsonColumns().asScala
   val jsonColumns: Seq[String] = task.getJsonColumns().asScala
+  var opened:Option[Unit] = None
 
   def timestampFormatter(): TimestampFormatter =
     new TimestampFormatter(task, Optional.absent())
 
   override def add(page: Page): Unit = {
-    encoder.nextFile()
+    if (opened.isEmpty) {
+      encoder.nextFile()
+      opened = Some(Unit)
+    }
     val reader: PageReader = new PageReader(schema)
     reader.setPage(page)
     while (reader.nextRecord()) {
