@@ -15,7 +15,8 @@ case class ColumnVisitor(reader: PageReader,
     extends EmbulkColumnVisitor {
   import scala.collection.mutable
 
-  private val record = mutable.Map[String, Json]()
+  private val record = mutable.Map[Column, Json]()
+  private val explodeRecord = mutable.LinkedHashMap[String, Json]()
 
   override def timestampColumn(column: Column): Unit =
     value(column, reader.getTimestamp).foreach(v =>
@@ -28,11 +29,10 @@ case class ColumnVisitor(reader: PageReader,
         if (explodeColumns.contains(columnName)) {
           JsonParser(v).foreach {
             case (key, value) =>
-              record.put(key, value)
+              explodeRecord.put(key, value)
           }
         } else {
-          println("abc")
-          record.put(columnName, JsonEncoder(v))
+          explodeRecord.put(columnName, JsonEncoder(v))
         }
       } else {
         put(column, Json.fromString(v))
@@ -55,7 +55,7 @@ case class ColumnVisitor(reader: PageReader,
       if (explodeColumns.contains(column.getName)) {
         JsonParser(v.toString).foreach {
           case (key, value) =>
-            record.put(key, value)
+            explodeRecord.put(key, value)
         }
       } else {
         put(column, Json.fromString(v.toJson))
@@ -71,10 +71,26 @@ case class ColumnVisitor(reader: PageReader,
     }
 
   def put(column: Column, value: Json): Unit = {
-    record.put(column.getName, value)
+    record.put(column, value)
     ()
   }
 
-  def getLine: String = JsonEncoder(record.toMap).noSpaces
+  def getLine: String = {
+    val recordMap = new mutable.LinkedHashMap[String, Json]()
+    record.toList
+      .sortBy {
+        case (column, _) =>
+          column.getIndex
+      }
+      .foreach {
+        case (column, json) =>
+          recordMap.put(column.getName, json)
+      }
+    explodeRecord.foreach {
+      case (key, json) =>
+        recordMap.put(key, json)
+    }
+    JsonEncoder(recordMap).noSpaces
+  }
 
 }
