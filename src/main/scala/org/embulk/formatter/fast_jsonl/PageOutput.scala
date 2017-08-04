@@ -16,7 +16,6 @@ import org.embulk.spi.util.LineEncoder
 case class PageOutput(schema: Schema, task: PluginTask, output: FileOutput)
     extends EmbulkPageOutput {
   val encoder = new LineEncoder(output, task)
-  encoder.nextFile()
   val reader: PageReader = new PageReader(schema)
   val explodeColumns: Seq[String] = task.getExplodeJsonColumns().asScala
   val jsonColumns: Seq[String] = task.getJsonColumns().asScala
@@ -25,6 +24,7 @@ case class PageOutput(schema: Schema, task: PluginTask, output: FileOutput)
     new TimestampFormatter(task, Optional.absent())
 
   override def add(page: Page): Unit = {
+    encoder.nextFile()
     val reader: PageReader = new PageReader(schema)
     reader.setPage(page)
     while (reader.nextRecord()) {
