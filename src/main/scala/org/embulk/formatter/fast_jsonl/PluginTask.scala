@@ -17,4 +17,8 @@ trait PluginTask
   @ConfigDefault("[]")
   def getExplodeJsonColumns(): java.util.List[String]
 
+  @Config("json_columns")
+  @ConfigDefault("[]")
+  def getJsonColumns(): java.util.List[String]
+
 }

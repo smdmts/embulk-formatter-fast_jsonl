@@ -11,10 +11,10 @@ Format json as 1 json in single line.
 - **encoding**: output encoding. must be one of "UTF-8", "UTF-16LE", "UTF-32BE", "UTF-32LE" or "UTF-32BE" (string default: 'UTF-8')
 - **newline**: newline character. (string default: 'LF')
     - CRLF, LF, CR
-- **date_format**: date format,. (string default: '%Y-%m-%d %H:%M:%S.%6N %z')
-- **timezone**: timezone. "JST" (string default: UTC)
+- **default_timezone**: timezone. "JST" (string default: UTC)
+- **default_timestamp_format**: date format,. (string default: '%Y-%m-%d %H:%M:%S.%6N %z')
 - **explode_json_columns**: json column's explode to top fields. (array default:[])
-    
+- **json_columns**:  json formatted as string column name. (array default:[])
 
 ## Example
 

@@ -10,7 +10,8 @@ import org.embulk.spi.{
 
 case class ColumnVisitor(reader: PageReader,
                          timestampFormatter: TimestampFormatter,
-                         explodeColumn: Seq[String])
+                         explodeColumns: Seq[String],
+                         jsonColumns: Seq[String])
     extends EmbulkColumnVisitor {
   import scala.collection.mutable
 
@@ -21,8 +22,22 @@ case class ColumnVisitor(reader: PageReader,
       put(column, Json.fromString(timestampFormatter.format(v))))
 
   override def stringColumn(column: Column): Unit =
-    value(column, reader.getString).foreach(v =>
-      put(column, Json.fromString(v)))
+    value(column, reader.getString).foreach { v =>
+      val columnName = column.getName
+      if (jsonColumns.contains(columnName)) {
+        if (explodeColumns.contains(columnName)) {
+          JsonParser(v).foreach {
+            case (key, value) =>
+              record.put(key, value)
+          }
+        } else {
+          println("abc")
+          record.put(columnName, JsonEncoder(v))
+        }
+      } else {
+        put(column, Json.fromString(v))
+      }
+    }
 
   override def longColumn(column: Column): Unit =
     value(column, reader.getLong).foreach(v => put(column, Json.fromBigInt(v)))
@@ -37,7 +52,7 @@ case class ColumnVisitor(reader: PageReader,
 
   override def jsonColumn(column: Column): Unit = {
     value(column, reader.getJson).foreach { v =>
-      if (explodeColumn.contains(column.getName)) {
+      if (explodeColumns.contains(column.getName)) {
         JsonParser(v.toString).foreach {
           case (key, value) =>
             record.put(key, value)
@@ -60,6 +75,6 @@ case class ColumnVisitor(reader: PageReader,
     ()
   }
 
-  def getLine: String = JsonEncoder(record.toMap)
+  def getLine: String = JsonEncoder(record.toMap).noSpaces
 
 }
