@@ -15,7 +15,7 @@ case class ColumnVisitor(reader: PageReader,
     extends EmbulkColumnVisitor {
   import scala.collection.mutable
 
-  val recordMap = new mutable.LinkedHashMap[String, Json]()
+  private val recordMap = mutable.LinkedHashMap[String, Json]()
   private val explodeRecord = mutable.LinkedHashMap[String, Json]()
 
   override def timestampColumn(column: Column): Unit =
