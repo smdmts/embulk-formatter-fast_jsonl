@@ -7,14 +7,24 @@ import scala.collection.mutable
 
 class JsonEncoderSpec extends FlatSpec with Matchers {
   it should "be encode as map" in {
-    val sequence = JsonParser("{\"a\":\"b\", \"c\":\"d\"}")
+    val testData =
+      """
+        |{
+        |  "salutation" : "Hey",
+        |  "person" : {
+        |    "name" : "Chris"
+        |  },
+        |  "exclamationMarks" : 3
+        |}
+      """.stripMargin
+    val sequence = JsonParser(testData)
     val map = new mutable.LinkedHashMap[String, Json]()
     sequence.foreach {
       case ((string, json)) =>
         map.put(string, json)
     }
     val jsonString = JsonEncoder(map).noSpaces
-    jsonString should be("{\"a\":\"b\",\"c\":\"d\"}")
+    jsonString should be("{\"salutation\":\"Hey\",\"person\":{\"name\":\"Chris\"},\"exclamationMarks\":3}")
   }
 
 }
