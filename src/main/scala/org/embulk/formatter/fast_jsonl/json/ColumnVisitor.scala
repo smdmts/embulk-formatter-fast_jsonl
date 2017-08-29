@@ -41,7 +41,7 @@ case class ColumnVisitor(reader: PageReader,
     }
 
   override def longColumn(column: Column): Unit =
-    value(column, reader.getLong).foreach(v => put(column, Json.fromBigInt(v)))
+    value(column, reader.getLong).foreach(v => put(column, Json.fromLong(v)))
 
   override def doubleColumn(column: Column): Unit =
     value(column, reader.getDouble).foreach(v =>
