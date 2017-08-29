@@ -19,7 +19,8 @@ case class PageOutput(schema: Schema, task: PluginTask, output: FileOutput)
   val reader: PageReader = new PageReader(schema)
   val explodeColumns: Seq[String] = task.getExplodeJsonColumns().asScala
   val jsonColumns: Seq[String] = task.getJsonColumns().asScala
-  private var opened:Boolean = false
+  val suffixKey: Map[String, String] = task.getSuffixKey().asScala.toMap
+  private var opened: Boolean = false
 
   val timestampFormatter: TimestampFormatter =
     new TimestampFormatter(task, Optional.absent())
@@ -36,7 +37,8 @@ case class PageOutput(schema: Schema, task: PluginTask, output: FileOutput)
         ColumnVisitor(reader,
                       timestampFormatter,
                       explodeColumns,
-                      jsonColumns)
+                      jsonColumns,
+                      suffixKey)
       schema.visitColumns(visitor)
       encoder.addLine(visitor.getLine)
     }

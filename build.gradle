@@ -24,6 +24,7 @@ dependencies {
     compile group: 'io.circe', name: 'circe-core_2.11', version: '0.8.0'
     compile group: 'io.circe', name: 'circe-generic_2.11', version: '0.8.0'
     compile group: 'io.circe', name: 'circe-parser_2.11', version: '0.8.0'
+    testCompile group: 'org.scalatest', name: 'scalatest_2.11', version: '3.0.1'
     provided "org.embulk:embulk-core:0.8.22"
 }
 

@@ -24,7 +24,8 @@ class JsonEncoderSpec extends FlatSpec with Matchers {
         map.put(string, json)
     }
     val jsonString = JsonEncoder(map).noSpaces
-    jsonString should be("{\"salutation\":\"Hey\",\"person\":{\"name\":\"Chris\"},\"exclamationMarks\":3}")
+    jsonString should be(
+      "{\"salutation\":\"Hey\",\"person\":{\"name\":\"Chris\"},\"exclamationMarks\":3}")
   }
 
 }

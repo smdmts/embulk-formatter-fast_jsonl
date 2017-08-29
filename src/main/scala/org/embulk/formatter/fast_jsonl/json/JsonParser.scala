@@ -12,7 +12,7 @@ object JsonParser {
         sys.error(s"could not parse json. $value")
     }
 
-  def toJson(value: String):Json = {
+  def toJson(value: String): Json = {
     parse(value) match {
       case Right(v) =>
         v
