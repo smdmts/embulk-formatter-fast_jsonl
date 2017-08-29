@@ -21,4 +21,7 @@ trait PluginTask
   @ConfigDefault("[]")
   def getJsonColumns(): java.util.List[String]
 
+  @Config("suffix_key")
+  @ConfigDefault("{}")
+  def getSuffixKey(): java.util.Map[String, String]
 }

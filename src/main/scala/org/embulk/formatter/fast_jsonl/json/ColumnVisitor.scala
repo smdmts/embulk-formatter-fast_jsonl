@@ -11,7 +11,8 @@ import org.embulk.spi.{
 case class ColumnVisitor(reader: PageReader,
                          timestampFormatter: TimestampFormatter,
                          explodeColumns: Seq[String],
-                         jsonColumns: Seq[String])
+                         jsonColumns: Seq[String],
+                         suffixKey: Map[String, String])
     extends EmbulkColumnVisitor {
   import scala.collection.mutable
 
@@ -79,6 +80,10 @@ case class ColumnVisitor(reader: PageReader,
     explodeRecord.foreach {
       case (key, json) =>
         recordMap.put(key, json)
+    }
+    suffixKey.foreach {
+      case (key, value) =>
+        recordMap.put(key, Json.fromString(value))
     }
     JsonEncoder(recordMap).noSpaces
   }

@@ -16,6 +16,9 @@ Format json as 1 json in single line.
 - **explode_json_columns**: json column's explode to top fields. (array default:[])
 - **json_columns**:  json formatted as string column name. (array default:[])
 
+### additional mode
+- **suffix_key**: append suffix of key and value.(map Map[String,String]: {} )
+
 ## Example
 
 ```yaml
@@ -26,6 +29,8 @@ out:
     explode_json_columns: 
       - JSON_COLUMN_1
       - JSON_COLUMN_2
+    suffix_key:
+     append_key: append_value
 ```
 
 ## Run Examples
